@@ -5,5 +5,5 @@
 LIST="$(ls -- *-*)"
 for f in $LIST
 do
-  echo "$f" | sed 's/^[0-9]*//' | sed 's/-//'
+  echo "$f" | sed 's/^[0-9]*-//; s/^[A-Z]*-//; s/^[a-z]*-//'
 done
