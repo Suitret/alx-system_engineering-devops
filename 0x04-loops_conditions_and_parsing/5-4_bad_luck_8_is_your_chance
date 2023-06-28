@@ -13,7 +13,7 @@ do
   then
     echo "good luck"
   else
-    echo "Best school"
+    echo "Best School"
   fi
   ((i++))
 done
