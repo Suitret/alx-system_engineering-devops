@@ -2,8 +2,8 @@
 # This script is displaying the content of the current directory
 # In a list format
 # Where only the part of the name after the first dash is displayed
-LIST="$(ls -- *-*)"
+LIST="$(ls)"
 for f in $LIST
 do
-  echo "$f" | sed 's/^[0-9]*-//; s/^[A-Z]*-//; s/^[a-z]*-//'
+  echo "${f#*-}"
 done
