@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 # This script stops 4-to_infinity_and_beyond process.
-pid=$( pidof ./4-to_infinity_and_beyond )
-kill -9 "$pid"
+pgrep -f ./4-to_infinity_and_beyond | xargs kill
