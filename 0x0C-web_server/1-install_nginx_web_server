@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 # script that configures a new Ubuntu machine to respect some requirements
-sudo apt-get update
-
-sudo apt-get install -y nginx
-
-echo "Hello World!" | sudo tee /var/www/html/index.html > /dev/null
-
-sudo sed -i '/listen 80 default_server;/c\listen 80;' /etc/nginx/sites-available/default
-
-sudo service nginx restart
+apt-get -y update
+apt-get -y install nginx
+echo "Hello World!" > /var/www/html/index.nginx-debian.html
+service nginx start
