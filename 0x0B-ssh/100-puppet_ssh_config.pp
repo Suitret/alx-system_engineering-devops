@@ -1,12 +1,14 @@
 # configuration file so that you can connect to
 # a server without typing a password.
 
-file_line { 'Turn off passwd auth':
-  path => '/etc/ssh/sshd_config',
-  line => 'PasswordAuthentication no',
-}
-
-file_line { 'Declare identity file':
-  path => '/etc/ssh/ssh_config',
-  line => 'IdentityFile ~/.ssh/school',
+file_line {
+  'password_auth':
+    ensure => present,
+    path   => '/etc/ssh/ssh_config',
+    line   => '    PasswordAuthentication no'
+  ;
+  'key_location':
+    ensure => present,
+    path   => '/etc/ssh/ssh_config',
+    line   => '    IdentityFile ~/.ssh/holberton'
 }
