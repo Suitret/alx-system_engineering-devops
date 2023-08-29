@@ -1,3 +1,4 @@
+# Puppet manifest containing commands to automatically configure an Ubuntu machine to respect some requirements
 package { 'nginx':
   ensure => 'installed'
 }
