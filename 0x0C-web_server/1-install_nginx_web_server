@@ -5,7 +5,7 @@ sudo apt-get -y install nginx
 ufw allow 'Nginx HTTP'
 
 mkdir -p /var/www/html
-chown -R $USER:$USER /var/www/html
+sudo chown -R $USER:$USER /var/www/html
 
 echo 'Hello World!' > /var/www/html/index.html
 
