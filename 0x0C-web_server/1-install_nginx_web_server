@@ -2,7 +2,7 @@
 # script that configures a new Ubuntu machine to respect some requirements
 sudo apt-get -y update
 sudo apt-get -y install nginx
-ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTP'
 
 mkdir -p /var/www/html
 sudo chown -R $USER:$USER /var/www/html
