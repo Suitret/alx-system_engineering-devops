@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+# Install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Create a custom Nginx configuration file
+echo 'server {
+    listen 80 default_server;
+    server_name _;
+
+    location / {
+        add_header X-Served-By $HOSTNAME;
+        root /var/www/html;
+        index index.html;
+    }
+
+    # Other server configurations...
+}' | sudo tee /etc/nginx/sites-available/custom-header > /dev/null
+
+# Create a symbolic link to enable the custom configuration
+sudo ln -s /etc/nginx/sites-available/custom-header /etc/nginx/sites-enabled/
+
+# Remove the default configuration
+sudo rm /etc/nginx/sites-enabled/default
+
+# Test Nginx configuration and restart
+sudo nginx -t
+sudo systemctl restart nginx
