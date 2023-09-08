@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Function to display information about a subdomain
+display_info() {
+    local domain="$1"
+    local subdomain="$2"
+    local record_type=""
+    local destination=""
+    
+    # Use dig to fetch DNS information for the subdomain
+    result=$(dig "$subdomain.$domain" | grep -A1 'ANSWER SECTION:')
+    
+    # Extract the record type and destination IP
+    record_type=$(echo "$result" | awk '/IN\s+(A|CNAME)/ {print $4}')
+    destination=$(echo "$result" | awk '/IN\s+(A|CNAME)/ {print $5}')
+    
+    # Display the information
+    echo "The subdomain $subdomain is a $record_type record and points to $destination"
+}
+
+# Main script
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <domain> [subdomain]"
+    exit 1
+fi
+
+domain="$1"
+
+# If only domain is provided, display information for default subdomains
+if [ $# -eq 1 ]; then
+    display_info "$domain" www
+    display_info "$domain" lb-01
+    display_info "$domain" web-01
+    display_info "$domain" web-02
+else
+    subdomain="$2"
+    display_info "$domain" "$subdomain"
+fi
