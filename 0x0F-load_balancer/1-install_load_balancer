@@ -1,13 +1,40 @@
 #!/usr/bin/env bash
 # Install and configure HAProxy load balancer
 
-sudo apt-get -y update
+# Update package list and install HAProxy
+sudo apt-get update
 sudo apt-get install -y haproxy
 
-# Enable load balancer
-sudo sed -i "8 a\ENABLED=1\n" /etc/default/haproxy
+# Enable HAProxy service
+sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
 
-# Config load balancer with web servers
-sudo sed -i "$ a\ \nfrontend load_balancer\n\tbind\t0.0.0.0:80\n\tmode\thttp\n\tdefault_backend\tweb_servers\n\nbackend web_servers\n\tbalance\troundrobin\n\tserver\t264802-web-01\t52.87.220.246:80\n\tserver\t264802-web-02\t54.162.92.7:80" /etc/haproxy/haproxy.cfg
+# Configure HAProxy
+cat <<EOF | sudo tee /etc/haproxy/haproxy.cfg
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    user haproxy
+    group haproxy
 
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend load_balancer
+    bind 0.0.0.0:80
+    mode http
+    default_backend web_servers
+
+backend web_servers
+    balance roundrobin
+    server 264802-web-01 52.87.220.246:80 check
+    server 264802-web-02 54.162.92.7:80 check
+EOF
+
+# Start HAProxy service
 sudo service haproxy start
