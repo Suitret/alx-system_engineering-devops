@@ -1,45 +1,11 @@
 #!/usr/bin/env bash
+# Install and configure HAProxy load balancer
 
-# Install HAProxy
-sudo apt-get update
+sudo apt-get -y update
 sudo apt-get install -y haproxy
 
-# Configure HAProxy
-cat <<EOF | sudo tee /etc/haproxy/haproxy.cfg > /dev/null
-global
-    log /dev/log local0
-    log /dev/log local1 notice
-    user haproxy
-    group haproxy
-    maxconn 2000
-    daemon
+sudo sed -i "8 a\ENABLED=1\n" /etc/default/haproxy
 
-defaults
-    log global
-    mode http
-    option httplog
-    option dontlognull
-    option forwardfor
-    timeout connect 5000
-    timeout client 50000
-    timeout server 50000
+sudo sed -i "$ a\ \nfrontend load_balancer\n\tbind\t0.0.0.0:80\n\tmode\thttp\n\tdefault_backend\tweb_servers\n\nbackend web_servers\n\tbalance\troundrobin\n\tserver\t1115-web-01\t34.73.76.135:80\n\tserver\t1115-web-02\t18.209.20.255:80" /etc/haproxy/haproxy.cfg
 
-frontend http_front
-    bind *:80
-    default_backend http_back
-
-backend http_back
-    balance roundrobin
-    server web-01 264802-web-01:80 check
-    server web-02 264802-web-02:80 check
-EOF
-
-# Add hostname entries to /etc/hosts
-echo "127.0.0.1 264802-web-01" | sudo tee -a /etc/hosts > /dev/null
-echo "127.0.0.1 264802-web-02" | sudo tee -a /etc/hosts > /dev/null
-
-# Restart HAProxy
-sudo service haproxy restart
-
-# Enable HAProxy to start on boot
-sudo systemctl enable haproxy
+sudo service haproxy start
