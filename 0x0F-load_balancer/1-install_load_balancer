@@ -32,8 +32,8 @@ frontend load_balancer
 
 backend web_servers
     balance roundrobin
-    server 264802-web-01 52.87.220.246:80 check
-    server 264802-web-02 54.162.92.7:80 check
+    server web-01 52.87.220.246:80 check
+    server web-02 54.162.92.7:80 check
 EOF
 
 # Start HAProxy service
