@@ -6,6 +6,7 @@ ERROR_COPY="Ceci n'est pas une page - 404"
 
 sudo apt-get -y update
 sudo apt-get -y install nginx
+hostname=$(hostname)
 
 echo "$INDEX_COPY" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null
 echo "$ERROR_COPY" | sudo tee /var/www/html/custom_404.html > /dev/null
