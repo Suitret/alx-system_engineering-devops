@@ -1,33 +1,6 @@
-# Define a custom HTTP response header for Nginx
-class nginx_custom_header {
+# puppet file
 
-  # Install Nginx
-  package { 'nginx':
-    ensure => installed,
-  }
-
-  # Create a custom Nginx configuration file
-  file { '/etc/nginx/conf.d/custom-header.conf':
-    ensure  => present,
-    content => "location / {
-      add_header X-Served-By $hostname;
-    }",
-    notify  => Service['nginx'],
-  }
-
-  # Remove the default Nginx default site configuration
-  file { '/etc/nginx/sites-enabled/default':
-    ensure => absent,
-    notify => Service['nginx'],
-  }
-
-  # Ensure Nginx is running
-  service { 'nginx':
-    ensure  => running,
-    enable  => true,
-    require => Package['nginx'],
-  }
+exec { 'create custom':
+  command  => 'INDEX_COPY="Holberton School for the win!" && ERROR_COPY="Ceci n\'est pas une page - 404" && sudo apt-get -y update && sudo apt-get -y install nginx && echo "$INDEX_COPY" | sudo tee /var/www/html/index.nginx-debian.html > /dev/null && echo "$ERROR_COPY" | sudo tee /var/www/html/custom_404.html > /dev/null && sudo sed -i \'/^\sserver_name.*/a \        rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;\' /etc/nginx/sites-available/default && sudo sed -i \'/^\slocation.*/i \        error_page 404 /custom_404.html;\' /etc/nginx/sites-available/default && sudo sed -i \'/^\slocation.*/i \        add_header X-Served-By $hostname;\' /etc/nginx/sites-available/default && sudo service nginx start',
+  provider => shell,
 }
-
-# Apply the nginx_custom_header class to configure Nginx with the custom header
-include nginx_custom_header
