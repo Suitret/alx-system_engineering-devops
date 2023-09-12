@@ -1,38 +1,28 @@
 #!/usr/bin/env bash
 # Function to display information about a subdomain
+get_subdomain_spec () {
 
-display_info() {
-    local domain="$1"
-    local subdomain="$2"
-    local record_type=""
-    local destination=""
-    
-    # Use dig to fetch DNS information for the subdomain
-    result=$(dig "$subdomain.$domain" | grep -A1 'ANSWER SECTION:')
-    
-    # Extract the record type and destination IP
-    record_type=$(echo "$result" | awk '/IN\s+(A|CNAME)/ {print $4}')
-    destination=$(echo "$result" | awk '/IN\s+(A|CNAME)/ {print $5}')
-    
-    # Display the information
-    echo "The subdomain $subdomain is a $record_type record and points to $destination"
+	dig $2.$1 | awk 'c&&!--c;/;; ANSWER SECTION:/{c=1}' | awk -v subdom=$2 '{ print "The subdomain " subdom " is a " $4 " record and points to " $5}'
+
+	return 0
 }
 
-# Main script
-if [ $# -lt 1 ]; then
-    echo "Usage: $0 <domain> [subdomain]"
-    exit 1
-fi
+get_subdomain_all () {
 
-domain="$1"
+	subdomains=("www" "lb-01" "web-01" "web-02")
+		
+	for subdomain in "${subdomains[@]}"
+	do
+		dig $subdomain.$1 | awk 'c&&!--c;/;; ANSWER SECTION:/{c=1}' | awk -v subdom="$subdomain" '{ print "The subdomain " subdom " is a " $4 " record and points to " $5}'
+	done
 
-# If only domain is provided, display information for default subdomains
-if [ $# -eq 1 ]; then
-    display_info "$domain" www
-    display_info "$domain" lb-01
-    display_info "$domain" web-01
-    display_info "$domain" web-02
+	return 0
+}
+
+# determine how many args passed
+if [ -z $2 ]
+then
+	get_subdomain_all "$1"
 else
-    subdomain="$2"
-    display_info "$domain" "$subdomain"
+	get_subdomain_spec "$1" "$2"
 fi
