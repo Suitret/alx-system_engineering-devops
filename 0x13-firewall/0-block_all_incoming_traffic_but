@@ -1,0 +1,14 @@
+# Enable UFW
+sudo ufw enable
+
+# Set default policies
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Allow specific services
+sudo ufw allow ssh    # Allow SSH on the default port (22)
+sudo ufw allow https  # Allow HTTPS (443)
+sudo ufw allow http   # Allow HTTP (80)
+
+# Reload UFW to apply the rules
+sudo ufw reload
