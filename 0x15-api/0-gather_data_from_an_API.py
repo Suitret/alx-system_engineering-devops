@@ -33,12 +33,12 @@ def fetch_employee_todo_progress(employee_id):
     total_tasks = len(todos_data)
 
     # Display employee TODO list progress
-    print(f"Employee {user_data['name']} is done with \
-            tasks({num_completed_tasks}/{total_tasks}):")
+    print("Employee {} is done with tasks({}/{}):".format(
+        user_data['name'], num_completed_tasks, total_tasks))
 
     # Display titles of completed tasks
     for task in completed_tasks:
-        print(f"\t{task['title']}")
+        print(f"\t {task['title']}")
 
 
 if __name__ == "__main__":
