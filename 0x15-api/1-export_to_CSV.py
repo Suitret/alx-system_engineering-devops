@@ -43,7 +43,6 @@ def fetch_employee_todo_progress(employee_id):
                                 task['completed'], task['title']])
 
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python3 export_to_CSV.py <employee_id>")
