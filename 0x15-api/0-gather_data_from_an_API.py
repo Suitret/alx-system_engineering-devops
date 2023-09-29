@@ -6,6 +6,7 @@ returns information about his/her TODO list progress.
 import requests
 import sys
 
+
 def fetch_employee_todo_progress(employee_id):
     # Define the API endpoint URL
     base_url = 'https://jsonplaceholder.typicode.com'
@@ -38,6 +39,7 @@ def fetch_employee_todo_progress(employee_id):
     # Display titles of completed tasks
     for task in completed_tasks:
         print(f"\t{task['title']}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
