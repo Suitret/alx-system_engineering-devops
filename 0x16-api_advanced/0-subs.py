@@ -5,19 +5,21 @@ import requests
 
 
 def number_of_subscribers(subreddit):
-    """Function to give the count of subscriber for a subreddit
-    """
+    """GET Reddit subscriber count"""
+
+    headers = {'User-agent': 'alx-system_engineering-devops-0x16-api_advanced'}
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
 
-    # Set a custom User-Agent to avoid being blocked by Reddit's API
-    headers = {
-        'User-Agent':
-        'python:subreddit.subscriber.counter:v1.0.0 (by /u/Mental_Way_8071)'
-    }
+    with requests.get(url, allow_redirects=False, headers=headers) as resp:
+        is_success = resp.ok
+        response = resp.json()
 
-    # Make a GET request to the Reddit API
-    response = requests.get(url, headers=headers)
-
-    if response.status_code != 200:
+    if not is_success:
         return 0
-    return response.json().get("data", {}).get("subscribers", 0)
+
+    return response.get("data").get("subscribers")
+
+
+if __name__ == "__main__":
+    subreddit = sys.argv[1]
+    number_of_subscribers(subreddit)
