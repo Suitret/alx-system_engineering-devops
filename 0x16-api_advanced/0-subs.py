@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Module to give the count of subreddits
+"""
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -8,7 +10,8 @@ client_secret = 'x30M5_WNFaH7EWSRFswOwMhab5cqFg'
 
 
 def number_of_subscribers(subreddit):
-    # Set up the API URL for the subreddit's information
+    """Set up the API URL for the subreddit's information
+    """
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
 
     # Set a custom User-Agent to avoid being blocked by Reddit's API
