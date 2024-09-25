@@ -15,15 +15,23 @@ def top_ten(subreddit):
     try:
         response = requests.get(url, headers=headers,
                                 params=params, allow_redirects=False)
+
+        # Ensure that the response has a status code 200 (OK)
         if response.status_code == 200:
-            data = response.json()
-            posts = data.get('data', {}).get('children', [])
-            if not posts:
+            try:
+                data = response.json()  # Attempt to parse JSON
+                posts = data.get('data', {}).get('children', [])
+
+                # If there are no posts, handle it gracefully
+                if not posts:
+                    print(None)
+                    return
+
+                for post in posts:
+                    print(post.get('data', {}).get('title'))
+            except ValueError:
                 print(None)
-                return
-            for post in posts:
-                print(post.get('data', {}).get('title'))
         else:
             print(None)
-    except requests.RequestException:
+    except requests.RequestException as e:
         print(None)
