@@ -1,1 +1,2 @@
 https://medium.com/@tertiusadjaoke/postmortem-web-application-outage-on-e-commerce-platform-04406d6e4646
+https://medium.com/@tertiusadjaoke/postmortem-the-shopping-cart-of-doom-outage-89e0ffe830d2
