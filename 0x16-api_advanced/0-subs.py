@@ -7,19 +7,16 @@ import requests
 def number_of_subscribers(subreddit):
     """GET Reddit subscriber count"""
 
-    headers = {'User-agent': 'alx-system_engineering-devops-0x16-api_advanced'}
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    headers = {'User-Agent': 'Mozilla/5.0'}
 
-    with requests.get(url, allow_redirects=False, headers=headers) as resp:
-        is_success = resp.ok
-        response = resp.json()
-
-    if not is_success:
+    try:
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        if response.status_code == 200:
+            data = response.json()
+            subscribers = data.get('data', {}).get('subscribers', 0)
+            return subscribers
+        else:
+            return 0
+    except requests.RequestException:
         return 0
-
-    return response.get("data").get("subscribers")
-
-
-if __name__ == "__main__":
-    subreddit = sys.argv[1]
-    number_of_subscribers(subreddit)
