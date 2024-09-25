@@ -16,8 +16,8 @@ file { '/var/www/html/wordpress':
 
 # Restart Apache service to apply changes
 service { 'apache2':
-  ensure => running,
-  enable => true,
+  ensure    => running,
+  enable    => true,
   subscribe => Package['php'],
 }
 
